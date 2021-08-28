@@ -43,6 +43,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		453BD5CC26D9D3AA00271C14 /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		453BD5CD26D9D3B100271C14 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */,
+				4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */,
+				456DFC0426BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		456DFBED26BD1E6C004288F5 = {
 			isa = PBXGroup;
 			children = (
@@ -69,9 +87,6 @@
 				456DFBFD26BD1E6D004288F5 /* Assets.xcassets */,
 				456DFC0226BD1E6D004288F5 /* Persistence.swift */,
 				456DFC0726BD1E6D004288F5 /* Info.plist */,
-				4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */,
-				4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */,
-				456DFC0426BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld */,
 				456DFBFF26BD1E6D004288F5 /* Preview Content */,
 			);
 			path = "SwiftUI-training-TodoList";
@@ -88,7 +103,8 @@
 		4579B3B926CFFE6200FA7A7A /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */,
+				453BD5CD26D9D3B100271C14 /* Entity */,
+				453BD5CC26D9D3AA00271C14 /* DataStore */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";

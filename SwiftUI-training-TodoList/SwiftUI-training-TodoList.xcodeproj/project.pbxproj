@@ -15,6 +15,7 @@
 		456DFC0626BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 456DFC0426BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld */; };
 		4579B3B126CFFA2900FA7A7A /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */; };
 		4579B3B226CFFA2900FA7A7A /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */; };
+		4579B3BC26CFFF4100FA7A7A /* TodoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		456DFC0726BD1E6D004288F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,8 @@
 		456DFBF826BD1E6C004288F5 /* SwiftUI-training-TodoList */ = {
 			isa = PBXGroup;
 			children = (
+				4579B3BA26CFFEEA00FA7A7A /* Application */,
+				4579B3B926CFFE6200FA7A7A /* Infrastructure */,
 				456DFBF926BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift */,
 				456DFBFB26BD1E6C004288F5 /* ContentView.swift */,
 				456DFBFD26BD1E6D004288F5 /* Assets.xcassets */,
@@ -79,6 +83,21 @@
 				456DFC0026BD1E6D004288F5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4579B3B926CFFE6200FA7A7A /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		4579B3BA26CFFEEA00FA7A7A /* Application */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,6 +172,7 @@
 				456DFC0326BD1E6D004288F5 /* Persistence.swift in Sources */,
 				456DFC0626BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld in Sources */,
 				456DFBFC26BD1E6C004288F5 /* ContentView.swift in Sources */,
+				4579B3BC26CFFF4100FA7A7A /* TodoDataStore.swift in Sources */,
 				4579B3B126CFFA2900FA7A7A /* Todo+CoreDataClass.swift in Sources */,
 				456DFBFA26BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift in Sources */,
 				4579B3B226CFFA2900FA7A7A /* Todo+CoreDataProperties.swift in Sources */,

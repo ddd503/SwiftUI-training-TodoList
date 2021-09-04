@@ -17,21 +17,51 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
 
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+        NavigationView {
+            Group {
+            List {
+                ForEach(items) { item in
+                    Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                }
+                .onDelete(perform: deleteItems)
             }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
 
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
             }
+            .navigationTitle("Repositories")
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button(action: {}) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading){
+                    Button(action: {}) {
+                        Image(systemName: "cart")
+                    }
+                }
+                // placementで色々な表示方法を選べる
+                ToolbarItem(placement: .navigation){
+                    Button(action: {}) {
+                        Image(systemName: "yensign.square")
+                    }
+                }
+
+                // カスタムで作る場合(bottomBarでは自由度が少ないからカスタムでやっても良い)
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(action: {}) {
+                        Image(systemName: "arrow.uturn.backward")
+                    }
+                    Spacer()
+                    Text("操作")
+                    Spacer()
+                    Button(action: {}) {
+                        Image(systemName: "arrow.uturn.forward")
+                    }
+                }
+
+            })
         }
+
     }
 
     private func addItem() {

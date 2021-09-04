@@ -33,6 +33,7 @@ struct PersistenceController {
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "SwiftUI_training_TodoList")
         if inMemory {
+            // オンメモリーで使う場合はurlを"/dev/null"としておけば良い
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in

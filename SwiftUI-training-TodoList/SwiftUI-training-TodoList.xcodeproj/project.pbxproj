@@ -16,6 +16,7 @@
 		4579B3B126CFFA2900FA7A7A /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */; };
 		4579B3B226CFFA2900FA7A7A /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */; };
 		4579B3BC26CFFF4100FA7A7A /* TodoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */; };
+		45DA8F5826D9D449009791C6 /* Todo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DA8F5726D9D449009791C6 /* Todo+Mock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4579B3BB26CFFF4100FA7A7A /* TodoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDataStore.swift; sourceTree = "<group>"; };
+		45DA8F5726D9D449009791C6 /* Todo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+Mock.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				4579B3AF26CFFA2900FA7A7A /* Todo+CoreDataClass.swift */,
 				4579B3B026CFFA2900FA7A7A /* Todo+CoreDataProperties.swift */,
 				456DFC0426BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld */,
+				45DA8F5726D9D449009791C6 /* Todo+Mock.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				456DFBFC26BD1E6C004288F5 /* ContentView.swift in Sources */,
 				4579B3BC26CFFF4100FA7A7A /* TodoDataStore.swift in Sources */,
 				4579B3B126CFFA2900FA7A7A /* Todo+CoreDataClass.swift in Sources */,
+				45DA8F5826D9D449009791C6 /* Todo+Mock.swift in Sources */,
 				456DFBFA26BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift in Sources */,
 				4579B3B226CFFA2900FA7A7A /* Todo+CoreDataProperties.swift in Sources */,
 			);

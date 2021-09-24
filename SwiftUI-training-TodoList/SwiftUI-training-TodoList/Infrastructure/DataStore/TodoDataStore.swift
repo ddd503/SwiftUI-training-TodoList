@@ -19,13 +19,16 @@ protocol TodoDataStore {
 struct TodoDataStoreImpl: TodoDataStore {
     func create(title: String, content: String?) -> AnyPublisher<Void, Error> {
         let context = CoreDataManager.shared.container.viewContext
-        let newTodo = Todo(context: context)
-        // TODO: 最大値に1足した値がidになる
-        //        newTodo.id = ??
-        newTodo.title = title
-        newTodo.content = content
-        newTodo.editDate = Date()
-        return save(context: context)
+        return createNewId(context: context)
+            .flatMap { newId -> AnyPublisher<Void, Error> in
+                let newTodo = Todo(context: context)
+                newTodo.id = newId
+                newTodo.title = title
+                newTodo.content = content
+                newTodo.editDate = Date()
+                return save(context: context)
+            }
+            .eraseToAnyPublisher()
     }
 
     func read() -> AnyPublisher<[Todo], Error> {
@@ -102,6 +105,23 @@ struct TodoDataStoreImpl: TodoDataStore {
                 do {
                     try context.save()
                     promise(.success(()))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    private func createNewId(context: NSManagedObjectContext) -> AnyPublisher<Int64, Error> {
+        let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return Deferred {
+            Future<Int64, Error> { promise in
+                do {
+                    let todoList = try context.fetch(fetchRequest)
+                    promise(.success(Int64(todoList.count + 1)))
                 } catch {
                     promise(.failure(error))
                 }

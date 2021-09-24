@@ -13,7 +13,7 @@ protocol TodoDataStore {
     func create(title: String, content: String?) -> AnyPublisher<Void, Error>
     func read() -> AnyPublisher<[Todo], Error>
     func update(todo: Todo) -> AnyPublisher<[Todo], Error>
-    func delete(todo: Todo) -> AnyPublisher<[Todo], Never>
+    func delete(todo: Todo) -> AnyPublisher<Void, Error>
 }
 
 struct TodoDataStoreImpl: TodoDataStore {
@@ -64,9 +64,10 @@ struct TodoDataStoreImpl: TodoDataStore {
             .eraseToAnyPublisher()
     }
 
-    func delete(todo: Todo) -> AnyPublisher<[Todo], Never> {
-        // 仮で値を返す
-        Just([Todo]()).eraseToAnyPublisher()
+    func delete(todo: Todo) -> AnyPublisher<Void, Error> {
+        let context = CoreDataManager.shared.container.viewContext
+        context.delete(todo)
+        return save(context: context)
     }
 
     private func find(id: Int64, context: NSManagedObjectContext) -> AnyPublisher<Todo?, Error> {

@@ -7,82 +7,52 @@
 
 import SwiftUI
 import CoreData
+import Combine
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Todo.editDate, ascending: true)], animation: .default)
+    private var todoList: FetchedResults<Todo>
+    private let viewModel: TodoListViewModel
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    init(viewModel: TodoListViewModel = TodoListViewModel()) {
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
         NavigationView {
             Group {
-            List {
-                ForEach(items) { item in
-                    Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                List {
+                    ForEach(todoList) { todo in
+                        Text("最終更新： \(todo.editDate!, formatter: itemFormatter)")
+                    }
+                    .onDelete(perform: deleteItems)
                 }
-                .onDelete(perform: deleteItems)
-            }
 
             }
-            .navigationTitle("Repositories")
-            .toolbar(content: {
+            .navigationTitle("TodoList")
+            .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing){
-                    Button(action: {}) {
-                        Image(systemName: "square.and.arrow.up")
+                    EditButton()
+                }
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button(action: addTodo) {
+                        Image(systemName: "plus.circle")
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading){
-                    Button(action: {}) {
-                        Image(systemName: "cart")
-                    }
-                }
-                // placementで色々な表示方法を選べる
-                ToolbarItem(placement: .navigation){
-                    Button(action: {}) {
-                        Image(systemName: "yensign.square")
-                    }
-                }
-
-                // カスタムで作る場合(bottomBarでは自由度が少ないからカスタムでやっても良い)
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(action: {}) {
-                        Image(systemName: "arrow.uturn.backward")
-                    }
-                    Spacer()
-                    Text("操作")
-                    Spacer()
-                    Button(action: {}) {
-                        Image(systemName: "arrow.uturn.forward")
-                    }
-                }
-
-            })
+            }
         }
-
     }
 
-    private func addItem() {
+    private func addTodo() {
         withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            viewModel.addTodo()
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+            offsets.map { todoList[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()
@@ -105,6 +75,6 @@ private let itemFormatter: DateFormatter = {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        ContentView().environment(\.managedObjectContext, CoreDataManager.preview.container.viewContext)
     }
 }

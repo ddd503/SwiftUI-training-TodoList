@@ -34,4 +34,19 @@ struct CoreDataManager {
             }
         })
     }
+
+    static var preview: CoreDataManager = {
+        let result = CoreDataManager(inMemory: true)
+        let viewContext = result.container.viewContext
+        for _ in 0..<10 {
+            let todo = Todo(context: viewContext)
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+        return result
+    }()
 }

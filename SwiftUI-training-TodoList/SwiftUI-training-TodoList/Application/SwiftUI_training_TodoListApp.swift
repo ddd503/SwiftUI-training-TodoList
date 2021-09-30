@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct SwiftUI_training_TodoListApp: App {
-    let persistenceController = PersistenceController.shared
+    let coreDataManager = CoreDataManager.shared
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.managedObjectContext, coreDataManager.container.viewContext)
         }
     }
 }

@@ -11,8 +11,8 @@ extension Todo {
     static func mock1() -> Todo {
         let todo = Todo()
         todo.id = 1
-        todo.title = ""
-        todo.content = ""
+        todo.title = "タイトル"
+        todo.content = "本文"
         todo.editDate = Date()
         return todo
     }

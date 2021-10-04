@@ -10,14 +10,14 @@ import Foundation
 import CoreData
 
 protocol TodoDataStore {
-    func create(title: String, content: String?) -> AnyPublisher<Void, Error>
+    func create(title: String, content: String?) -> AnyPublisher<[Todo], Error>
     func read() -> AnyPublisher<[Todo], Error>
     func update(todo: Todo) -> AnyPublisher<[Todo], Error>
     func delete(todo: Todo) -> AnyPublisher<Void, Error>
 }
 
 struct TodoDataStoreImpl: TodoDataStore {
-    func create(title: String, content: String?) -> AnyPublisher<Void, Error> {
+    func create(title: String, content: String?) -> AnyPublisher<[Todo], Error> {
         let context = CoreDataManager.shared.container.viewContext
         return createNewId(context: context)
             .flatMap { newId -> AnyPublisher<Void, Error> in
@@ -27,6 +27,9 @@ struct TodoDataStoreImpl: TodoDataStore {
                 newTodo.content = content
                 newTodo.editDate = Date()
                 return save(context: context)
+            }
+            .flatMap {_ -> AnyPublisher<[Todo], Error> in
+                read()
             }
             .eraseToAnyPublisher()
     }

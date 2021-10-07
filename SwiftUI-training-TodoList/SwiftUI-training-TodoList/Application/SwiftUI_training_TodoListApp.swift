@@ -13,8 +13,7 @@ struct SwiftUI_training_TodoListApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, coreDataManager.container.viewContext)
+            TodoListView(viewModel: TodoListViewModel())
         }
     }
 }

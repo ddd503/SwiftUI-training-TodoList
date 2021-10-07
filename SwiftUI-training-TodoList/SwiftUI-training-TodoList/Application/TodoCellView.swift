@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-struct TodoInfo {
-    let id: Int64
-    let title: String?
-    let content: String?
-    let editDate: Date?
-
-    static let mock = {
-        TodoInfo(id: 1,
-                 title: "タイトル",
-                 content: "本文",
-                 editDate: Date())
-    }()
-}
-
 struct TodoCell: View {
     let todo: TodoInfo
 
@@ -34,6 +20,7 @@ struct TodoCell: View {
                 Spacer()
             }
         }
+        .padding(10)
     }
 
     private let itemFormatter: DateFormatter = {
@@ -49,6 +36,6 @@ struct TodoCell: View {
 struct TodoCell_Previews: PreviewProvider {
     static var previews: some View {
         TodoCell(todo: TodoInfo.mock)
-            .previewLayout(.fixed(width: 300, height: 50))
+            .previewLayout(.fixed(width: 300, height: 60))
     }
 }

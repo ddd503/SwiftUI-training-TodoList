@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct TodoListView: View {
+    let viewModel: TodoListViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+                ForEach(viewModel.todoList) { todo in
+                    TodoCell(todo: todo)
+                }
+            }
+            .navigationTitle("TODO")
+            .toolbar {
+                EditButton()
+            }
+        }
     }
 }
 
 struct TodoListView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoListView()
+        TodoListView(viewModel: TodoListViewModel())
     }
 }

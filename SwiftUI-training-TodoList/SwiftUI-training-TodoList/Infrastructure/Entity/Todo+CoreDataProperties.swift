@@ -2,7 +2,7 @@
 //  Todo+CoreDataProperties.swift
 //  SwiftUI-training-TodoList
 //
-//  Created by kawaharadai on 2021/08/20.
+//  Created by kawaharadai on 2021/10/09.
 //
 //
 
@@ -16,10 +16,10 @@ extension Todo {
         return NSFetchRequest<Todo>(entityName: "Todo")
     }
 
-    @NSManaged public var id: Int64
-    @NSManaged public var title: String?
     @NSManaged public var content: String?
     @NSManaged public var editDate: Date?
+    @NSManaged public var uuid: String?
+    @NSManaged public var title: String?
 
 }
 

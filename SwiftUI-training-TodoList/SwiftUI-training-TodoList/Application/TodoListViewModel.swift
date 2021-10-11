@@ -7,14 +7,13 @@
 
 import Foundation
 import Combine
-import CoreData
 
 final class TodoListViewModel: ObservableObject {
-    private let todoDataStore: TodoDataStore
+    private let todoInfoDataStore: TodoInfoDataStore
     private var cancellables = Set<AnyCancellable>()
     @Published private(set) var todoList: [TodoInfo] = TodoInfo.mockList
 
-    init(todoDataStore: TodoDataStore = TodoDataStoreImpl()) {
-        self.todoDataStore = todoDataStore
+    init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl()) {
+        self.todoInfoDataStore = todoInfoDataStore
     }
 }

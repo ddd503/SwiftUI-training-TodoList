@@ -16,11 +16,17 @@ struct TodoListView: View {
                 ForEach(viewModel.todoList) { todo in
                     TodoCell(todo: todo)
                 }
+                .onDelete { indexSet in
+                    viewModel.onDelete(atOffsets: indexSet)
+                }
             }
             .navigationTitle("TODO")
             .toolbar {
                 EditButton()
             }
+        }
+        .onAppear {
+            viewModel.onAppear()
         }
     }
 }

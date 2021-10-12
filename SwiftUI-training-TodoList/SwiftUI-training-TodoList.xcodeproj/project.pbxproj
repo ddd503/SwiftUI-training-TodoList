@@ -60,6 +60,7 @@
 		453BD5CC26D9D3AA00271C14 /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
+				45AF9DF027114095008E7613 /* Todo+CoreDataClass.swift */,
 				4579B3BB26CFFF4100FA7A7A /* TodoInfoDataStore.swift */,
 				451B941A26EBAC690006975E /* CoreDataManager.swift */,
 				45AF9DEE27113B48008E7613 /* CoreDataSavePublisher.swift */,
@@ -73,7 +74,6 @@
 		453BD5CD26D9D3B100271C14 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				45AF9DF027114095008E7613 /* Todo+CoreDataClass.swift */,
 				45AF9DF127114095008E7613 /* Todo+CoreDataProperties.swift */,
 				456DFC0426BD1E6D004288F5 /* SwiftUI_training_TodoList.xcdatamodeld */,
 			);

@@ -10,7 +10,7 @@ import CoreData
 
 struct CoreDataDeletePublisher<DataModel>: Publisher where DataModel: NSManagedObject {
     typealias Output = Void
-    typealias Failure = Error
+    typealias Failure = Never
 
     let context: NSManagedObjectContext
     let dataModel: DataModel

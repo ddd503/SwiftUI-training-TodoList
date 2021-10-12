@@ -80,7 +80,7 @@ struct TodoInfoDataStoreImpl: TodoInfoDataStore {
         return fetchPublisher
             .flatMap { fetchResult -> AnyPublisher<Void, Error> in
                 firstTodoPublisher(todoList: fetchResult)
-                    .flatMap { todo -> AnyPublisher<Void, Error> in
+                    .flatMap { todo -> AnyPublisher<Void, Never> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content
                         todo.editDate = Date()

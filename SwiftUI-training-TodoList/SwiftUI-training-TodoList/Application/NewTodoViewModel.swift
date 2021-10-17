@@ -1,5 +1,5 @@
 //
-//  TodoViewModel.swift
+//  NewTodoViewModel.swift
 //  SwiftUI-training-TodoList
 //
 //  Created by kawaharadai on 2021/10/16.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class TodoViewModel: ObservableObject {
+final class NewTodoViewModel: ObservableObject {
     @Published var todoText: String = ""
     private let todoInfoDataStore: TodoInfoDataStore
     private var cancellables = Set<AnyCancellable>()

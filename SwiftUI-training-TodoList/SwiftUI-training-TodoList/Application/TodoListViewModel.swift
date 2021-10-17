@@ -12,6 +12,7 @@ final class TodoListViewModel: ObservableObject {
     private let todoInfoDataStore: TodoInfoDataStore
     private var cancellables = Set<AnyCancellable>()
     @Published private(set) var todoList: [TodoInfo] = []
+    @Published var showNewTodoView: Bool = false
 
     init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl()) {
         self.todoInfoDataStore = todoInfoDataStore

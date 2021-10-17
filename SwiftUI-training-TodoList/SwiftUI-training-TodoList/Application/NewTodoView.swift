@@ -11,16 +11,31 @@ struct NewTodoView: View {
     @ObservedObject var viewModel: NewTodoViewModel
 
     var body: some View {
-        TextEditor(text: $viewModel.todoText)
-            .padding()
-            .onDisappear {
-                viewModel.onDisappear()
+        VStack {
+            HStack {
+                Button(action: {}) {
+                    Text("保存")
+                }
+                Spacer()
+                Button(action: {
+                    viewModel.onTapCloseButton()
+                }) {
+                    Text("閉じる")
+                }
             }
+            TextEditor(text: $viewModel.todoText)
+        }
+        .padding()
+        .onDisappear {
+            viewModel.onDisappear()
+        }
     }
 }
 
 struct TodoView_Previews: PreviewProvider {
+    @State static var dummy = false
+
     static var previews: some View {
-        NewTodoView(viewModel: NewTodoViewModel())
+        NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: TodoView_Previews.$dummy))
     }
 }

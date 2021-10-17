@@ -7,14 +7,21 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class NewTodoViewModel: ObservableObject {
     @Published var todoText: String = ""
+    private(set) var showNewTodoView: Binding<Bool>
     private let todoInfoDataStore: TodoInfoDataStore
     private var cancellables = Set<AnyCancellable>()
 
-    init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl()) {
+    init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl(), showNewTodoView: Binding<Bool>) {
         self.todoInfoDataStore = todoInfoDataStore
+        self.showNewTodoView = showNewTodoView
+    }
+
+    func onTapCloseButton() {
+        showNewTodoView.wrappedValue = false
     }
 
     func onDisappear() {

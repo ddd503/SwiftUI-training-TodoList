@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodoListView: View {
     @ObservedObject var viewModel: TodoListViewModel
-    @State private var show: Bool = false
+
     var body: some View {
         NavigationView {
             List {
@@ -30,7 +30,7 @@ struct TodoListView: View {
                         Image(systemName: "plus.app.fill")
                     }
                     .sheet(isPresented: $viewModel.showNewTodoView) {
-                        NewTodoView(viewModel: NewTodoViewModel())
+                        NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: $viewModel.showNewTodoView))
                     }
                     .frame(width: 50,
                            height: 50,

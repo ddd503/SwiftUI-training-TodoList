@@ -27,10 +27,6 @@ final class TodoListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func onTapAdd() {
-        // TextViewの画面に遷移
-    }
-
     func onDelete(atOffsets indexSet: IndexSet) {
         indexSet.lazy
             .map { self.todoList[$0] }

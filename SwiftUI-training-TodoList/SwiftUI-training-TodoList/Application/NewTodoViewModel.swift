@@ -15,7 +15,8 @@ final class NewTodoViewModel: ObservableObject {
     private let todoInfoDataStore: TodoInfoDataStore
     private var cancellables = Set<AnyCancellable>()
 
-    init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl(), showNewTodoView: Binding<Bool>) {
+    init(todoInfoDataStore: TodoInfoDataStore = TodoInfoDataStoreImpl(),
+         showNewTodoView: Binding<Bool>) {
         self.todoInfoDataStore = todoInfoDataStore
         self.showNewTodoView = showNewTodoView
     }
@@ -24,14 +25,16 @@ final class NewTodoViewModel: ObservableObject {
         showNewTodoView.wrappedValue = false
     }
 
-    func onDisappear() {
+    func onTapSaveButton() {
         todoInfoDataStore.create(title: "", content: todoText)
-            .sink { completion in
+            .sink { [unowned self] completion in
                 switch completion {
                 case .failure(let error):
                     print("Todo作成失敗:\(error)")
+                    // 失敗アラート出しても良い
                 case .finished:
                     print("作成成功")
+                    self.showNewTodoView.wrappedValue = false
                 }
             } receiveValue: { todoInfo in
                 print("作成されたTodo:\(todoInfo)")

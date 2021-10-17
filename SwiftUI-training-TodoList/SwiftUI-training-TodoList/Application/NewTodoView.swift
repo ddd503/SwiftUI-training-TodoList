@@ -7,13 +7,20 @@
 
 import SwiftUI
 
+enum NewTodoViewState: Int, Hashable {
+    case didLoad
+}
+
 struct NewTodoView: View {
     @ObservedObject var viewModel: NewTodoViewModel
+    @FocusState var state: NewTodoViewState?
 
     var body: some View {
         VStack {
             HStack {
-                Button(action: {}) {
+                Button(action: {
+                    viewModel.onTapSaveButton()
+                }) {
                     Text("保存")
                 }
                 Spacer()
@@ -24,10 +31,12 @@ struct NewTodoView: View {
                 }
             }
             TextEditor(text: $viewModel.todoText)
+                .focused($state, equals: .didLoad)
         }
         .padding()
-        .onDisappear {
-            viewModel.onDisappear()
+        .onAppear {
+            // なぜここでTextEditorがfirstResponderにならない？
+            state = .didLoad
         }
     }
 }

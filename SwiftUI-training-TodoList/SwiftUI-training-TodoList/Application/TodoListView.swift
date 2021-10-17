@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoListView: View {
-    let viewModel: TodoListViewModel
+    @ObservedObject var viewModel: TodoListViewModel
 
     var body: some View {
         NavigationView {
@@ -22,7 +22,15 @@ struct TodoListView: View {
             }
             .navigationTitle("TODO")
             .toolbar {
-                EditButton()
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    EditButton()
+                    Button(action: {}) {
+                        Image(systemName: "plus.app.fill")
+                    }
+                    .frame(width: 50,
+                           height: 50,
+                           alignment: .center)
+                }
             }
         }
         .onAppear {

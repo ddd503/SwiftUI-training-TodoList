@@ -9,7 +9,7 @@ import CoreData
 import Combine
 
 struct CoreDataInsertPublisher: Publisher {
-    typealias Output = Void
+    typealias Output = Todo
     typealias Failure = Error
 
     let context: NSManagedObjectContext
@@ -29,6 +29,7 @@ struct CoreDataInsertPublisher: Publisher {
 
         do {
             try context.save()
+            _ = subscriber.receive(newTodo)
             subscriber.receive(completion: .finished)
         } catch {
             subscriber.receive(completion: .failure(error))

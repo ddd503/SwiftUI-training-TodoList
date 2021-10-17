@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 protocol TodoInfoDataStore {
-    func create(title: String, content: String?) -> AnyPublisher<Void, Error>
+    func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error>
     func read() -> AnyPublisher<[TodoInfo], Error>
     func update(todoInfo: TodoInfo) -> AnyPublisher<TodoInfo, Error>
     func delete(todoInfo: TodoInfo) -> AnyPublisher<Void, Error>
@@ -21,12 +21,18 @@ enum TodoDataStoreError: Error {
 }
 
 struct TodoInfoDataStoreImpl: TodoInfoDataStore {
-    func create(title: String, content: String?) -> AnyPublisher<Void, Error> {
+    func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error> {
         CoreDataInsertPublisher(context: CoreDataManager.shared.container.viewContext,
                                 uuid: UUID().uuidString,
                                 title: title,
                                 content: content,
                                 editDate: Date())
+            .map { todo in
+                TodoInfo(id: todo.uuid!,
+                         title: todo.title,
+                         content: todo.content,
+                         editDate: todo.editDate)
+            }
             .eraseToAnyPublisher()
     }
 

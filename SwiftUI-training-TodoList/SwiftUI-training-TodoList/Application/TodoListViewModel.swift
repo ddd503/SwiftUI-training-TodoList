@@ -37,7 +37,7 @@ final class TodoListViewModel: ObservableObject {
                 todoInfoDataStore.delete(todoInfo: todoInfo)
                     .subscribe(on: DispatchQueue.global())
                     .receive(on: DispatchQueue.main)
-                    .sink(receiveCompletion: { print($0) }, receiveValue: { [unowned self] _ in
+                    .sink(receiveCompletion: {_ in }, receiveValue: { [unowned self] _ in
                         self.todoList.remove(atOffsets: indexSet)
                     })
                     .store(in: &cancellables)

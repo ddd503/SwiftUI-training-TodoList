@@ -27,6 +27,15 @@ final class TodoListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
+    func onDisappear() {
+        todoInfoDataStore.read()
+            .replaceError(with: [])
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.todoList, on: self)
+            .store(in: &cancellables)
+    }
+
     func onDelete(atOffsets indexSet: IndexSet) {
         indexSet.lazy
             .map { self.todoList[$0] }

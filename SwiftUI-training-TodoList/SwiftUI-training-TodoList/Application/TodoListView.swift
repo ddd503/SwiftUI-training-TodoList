@@ -24,17 +24,13 @@ struct TodoListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     EditButton()
-                    Button(action: {
-                        viewModel.showNewTodoView.toggle()
-                    }) {
+                    NavigationLink(destination: NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: $viewModel.showNewTodoView))
+                                    .onDisappear(perform: {
+                        viewModel.onDisappear()
+                    }),
+                                   isActive: $viewModel.showNewTodoView) {
                         Image(systemName: "plus.app.fill")
                     }
-                    .sheet(isPresented: $viewModel.showNewTodoView) {
-                        NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: $viewModel.showNewTodoView))
-                    }
-                    .frame(width: 50,
-                           height: 50,
-                           alignment: .center)
                 }
             }
         }

@@ -50,7 +50,7 @@ extension CoreDataFetchPublisher.Subscription: Subscription {
             demand -= 1
             let result = try context.fetch(request)
             demand += subscriber.receive(result)
-//            subscriber.receive(completion: .finished)
+            subscriber.receive(completion: .finished)
         } catch {
             subscriber.receive(completion: .failure(error))
         }

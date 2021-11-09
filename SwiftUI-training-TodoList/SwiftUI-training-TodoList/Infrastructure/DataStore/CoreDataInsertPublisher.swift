@@ -74,7 +74,7 @@ extension CoreDataInsertPublisher.Subscription: Subscription {
             demand -= 1
             try context.save()
             demand += subscriber.receive(newTodo)
-//            subscriber.receive(completion: .finished)
+            subscriber.receive(completion: .finished)
         } catch {
             subscriber.receive(completion: .failure(error))
         }

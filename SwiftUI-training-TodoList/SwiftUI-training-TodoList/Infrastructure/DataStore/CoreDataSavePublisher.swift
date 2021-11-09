@@ -27,8 +27,7 @@ extension CoreDataSavePublisher {
         private var subscriber: S?
         let context: NSManagedObjectContext
 
-        init(subscriber: S,
-             context: NSManagedObjectContext) {
+        init(subscriber: S, context: NSManagedObjectContext) {
             self.subscriber = subscriber
             self.context = context
         }

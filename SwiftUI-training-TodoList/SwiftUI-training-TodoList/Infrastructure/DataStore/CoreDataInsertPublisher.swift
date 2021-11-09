@@ -21,12 +21,13 @@ struct CoreDataInsertPublisher: Publisher {
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         // subscriberの登録
         // 購読時に実行する処理を登録
-        let subscription = CoreDataInsertPublisher.Subscription(subscriber: subscriber,
-                                                                context: context,
-                                                                uuid: uuid,
-                                                                title: title,
-                                                                content: content,
-                                                                editDate: editDate)
+        let subscription =
+        CoreDataInsertPublisher.Subscription(subscriber: subscriber,
+                                             context: context,
+                                             uuid: uuid,
+                                             title: title,
+                                             content: content,
+                                             editDate: editDate)
         subscriber.receive(subscription: subscription)
     }
 }
@@ -45,7 +46,8 @@ extension CoreDataInsertPublisher {
              context: NSManagedObjectContext,
              uuid: String,
              title: String,
-             content: String?, editDate: Date) {
+             content: String?,
+             editDate: Date) {
             self.subscriber = subscriber
             self.context = context
             self.uuid = uuid
@@ -57,8 +59,8 @@ extension CoreDataInsertPublisher {
 }
 
 extension CoreDataInsertPublisher.Subscription: Subscription {
+    // 購読時毎に実行される処理
     func request(_ demand: Subscribers.Demand) {
-        // 購読時毎に実行される処理
         var demand = demand
         guard let subscriber = subscriber, demand > 0 else { return }
 

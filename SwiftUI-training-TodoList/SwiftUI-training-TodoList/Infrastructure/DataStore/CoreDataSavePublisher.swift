@@ -15,22 +15,42 @@ struct CoreDataSavePublisher: Publisher {
     let context: NSManagedObjectContext
 
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        do {
-            try context.save()
-            subscriber.receive(completion: .finished)
-        } catch {
-            subscriber.receive(completion: .failure(error))
-        }
-
+        let subscription = CoreDataSavePublisher.Subscription(subscriber: subscriber,
+                                                              context: context)
         // 購読完了の通知
-        subscriber.receive(subscription: CoreDataSaveSubscription(combineIdentifier: CombineIdentifier()))
+        subscriber.receive(subscription: subscription)
     }
 }
 
-struct CoreDataSaveSubscription: Subscription {
-    let combineIdentifier: CombineIdentifier
+extension CoreDataSavePublisher {
+    class Subscription<S> where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        private var subscriber: S?
+        let context: NSManagedObjectContext
 
-    func request(_ demand: Subscribers.Demand) {}
+        init(subscriber: S,
+             context: NSManagedObjectContext) {
+            self.subscriber = subscriber
+            self.context = context
+        }
+    }
+}
 
-    func cancel() {}
+extension CoreDataSavePublisher.Subscription: Subscription {
+    // 購読時毎に実行される処理
+    func request(_ demand: Subscribers.Demand) {
+        var demand = demand
+        guard let subscriber = subscriber, demand > 0 else { return }
+        do {
+            demand -= 1
+            try context.save()
+            demand += subscriber.receive(())
+//                subscriber.receive(completion: .finished)
+        } catch {
+            subscriber.receive(completion: .failure(error))
+        }
+    }
+
+    func cancel() {
+        subscriber = nil
+    }
 }

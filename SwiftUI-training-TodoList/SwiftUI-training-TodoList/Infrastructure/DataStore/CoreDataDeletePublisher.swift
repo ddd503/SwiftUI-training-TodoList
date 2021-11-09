@@ -16,17 +16,44 @@ struct CoreDataDeletePublisher<DataModel>: Publisher where DataModel: NSManagedO
     let dataModel: DataModel
 
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        context.delete(dataModel)
-        subscriber.receive(completion: .finished)
+        let subscription =
+        CoreDataDeletePublisher.Subscription(subscriber: subscriber,
+                                             context: context,
+                                             dataModel: dataModel)
         // 購読完了の通知
-        subscriber.receive(subscription: CoreDataDeleteSubscription(combineIdentifier: CombineIdentifier()))
+        subscriber.receive(subscription: subscription)
     }
 }
 
-struct CoreDataDeleteSubscription: Subscription {
-    let combineIdentifier: CombineIdentifier
+extension CoreDataDeletePublisher {
+    class Subscription<S> where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        // Sを使うためにextensionでインナークラスにしている
+        private var subscriber: S?
+        let context: NSManagedObjectContext
+        let dataModel: DataModel
 
-    func request(_ demand: Subscribers.Demand) {}
+        init(subscriber: S,
+             context: NSManagedObjectContext,
+             dataModel: DataModel) {
+            self.subscriber = subscriber
+            self.context = context
+            self.dataModel = dataModel
+        }
+    }
+}
 
-    func cancel() {}
+extension CoreDataDeletePublisher.Subscription: Subscription {
+    func request(_ demand: Subscribers.Demand) {
+        var demand = demand
+        guard let subscriber = subscriber, demand > 0 else { return }
+            demand -= 1
+            context.delete(dataModel)
+            subscriber.receive(completion: .finished)
+            demand += subscriber.receive(())
+//            subscriber.receive(completion: .finished)
+    }
+
+    func cancel() {
+        subscriber = nil
+    }
 }

@@ -56,6 +56,8 @@ extension CoreDataFetchPublisher.Subscription: Subscription {
         }
     }
 
-    func cancel() {}
+    func cancel() {
+        subscriber = nil
+    }
 }
 

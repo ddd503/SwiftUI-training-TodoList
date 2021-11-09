@@ -38,7 +38,7 @@ struct TodoInfoDataStoreImpl: TodoInfoDataStore {
 
     func read() -> AnyPublisher<[TodoInfo], Error> {
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-        let sortDescriptor = NSSortDescriptor(key: "uuid", ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: "editDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         return CoreDataFetchPublisher<Todo>(context: CoreDataManager.shared.container.viewContext,
                                             request: fetchRequest)

@@ -13,7 +13,10 @@ struct CoreDataInsertPublisher: Publisher {
     typealias Failure = Error
 
     let context: NSManagedObjectContext
-    let insertAction: () -> (Todo)
+    let uuid: String
+    var title: String?
+    var content: String?
+    let editDate: Date
 
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         // subscriberの登録
@@ -21,7 +24,10 @@ struct CoreDataInsertPublisher: Publisher {
         let subscription =
         CoreDataInsertPublisher.Subscription(subscriber: subscriber,
                                              context: context,
-                                             insertAction: insertAction)
+                                             uuid: uuid,
+                                             title: title,
+                                             content: content,
+                                             editDate: editDate)
         subscriber.receive(subscription: subscription)
     }
 }
@@ -31,14 +37,23 @@ extension CoreDataInsertPublisher {
         // Sを使うためにextensionでインナークラスにしている
         private var subscriber: S?
         let context: NSManagedObjectContext
-        let insertAction: () -> (Todo)
+        let uuid: String
+        let title: String?
+        let content: String?
+        let editDate: Date
 
         init(subscriber: S,
              context: NSManagedObjectContext,
-             insertAction: @escaping () -> (Todo)) {
+             uuid: String,
+             title: String?,
+             content: String?,
+             editDate: Date) {
             self.subscriber = subscriber
             self.context = context
-            self.insertAction = insertAction
+            self.uuid = uuid
+            self.title = title
+            self.content = content
+            self.editDate = editDate
         }
     }
 }
@@ -49,11 +64,16 @@ extension CoreDataInsertPublisher.Subscription: Subscription {
         var demand = demand
         guard let subscriber = subscriber, demand > 0 else { return }
 
+        let newTodo = Todo(context: context)
+        newTodo.uuid = uuid
+        newTodo.title = title
+        newTodo.content = content
+        newTodo.editDate = editDate
+
         do {
             demand -= 1
-            let todo = insertAction()
             try context.save()
-            demand += subscriber.receive((todo))
+            demand += subscriber.receive(newTodo)
             subscriber.receive(completion: .finished)
         } catch {
             subscriber.receive(completion: .failure(error))

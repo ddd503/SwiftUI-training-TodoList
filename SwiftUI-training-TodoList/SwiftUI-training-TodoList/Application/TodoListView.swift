@@ -42,6 +42,6 @@ struct TodoListView: View {
 
 struct TodoListView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoListView(viewModel: TodoListViewModel(todoInfoDataStore: TodoInfoDataStoreImpl()))
+        AppRouter.makeTodoListView()
     }
 }

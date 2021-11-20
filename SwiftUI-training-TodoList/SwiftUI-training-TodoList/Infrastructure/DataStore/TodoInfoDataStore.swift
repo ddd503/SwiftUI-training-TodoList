@@ -20,24 +20,30 @@ enum TodoDataStoreError: Error {
     case notFound
 }
 
-struct TodoInfoDataStoreImpl: TodoInfoDataStore {
+final class TodoInfoDataStoreImpl: TodoInfoDataStore {
+    private var insertPublisher: CoreDataInsertPublisher
+
+    init(insertPublisher: CoreDataInsertPublisher = TodoInfoDataStoreImpl.makeInsertPublisher()) {
+        self.insertPublisher = insertPublisher
+    }
+
+    static func makeInsertPublisher() -> CoreDataInsertPublisher {
+        CoreDataInsertPublisher(context: CoreDataManager.shared.container.viewContext,
+                                uuid: UUID().uuidString,
+                                editDate: Date())
+    }
+
     func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error> {
-        let context = CoreDataManager.shared.container.viewContext
-        return CoreDataInsertPublisher(context: context) {
-            let newTodo = Todo(context: context)
-            newTodo.uuid = UUID().uuidString
-            newTodo.title = title
-            newTodo.content = content
-            newTodo.editDate = Date()
-            return newTodo
-        }
-        .map { todo in
-            TodoInfo(id: todo.uuid!,
-                     title: todo.title,
-                     content: todo.content,
-                     editDate: todo.editDate)
-        }
-        .eraseToAnyPublisher()
+        insertPublisher.title = title
+        insertPublisher.content = content
+        return insertPublisher
+            .map { todo in
+                TodoInfo(id: todo.uuid!,
+                         title: todo.title,
+                         content: todo.content,
+                         editDate: todo.editDate)
+            }
+            .eraseToAnyPublisher()
     }
 
     func read() -> AnyPublisher<[TodoInfo], Error> {
@@ -65,8 +71,8 @@ struct TodoInfoDataStoreImpl: TodoInfoDataStore {
         let fetchPublisher = CoreDataFetchPublisher<Todo>(context: context,
                                                           request: fetchRequest)
         return fetchPublisher
-            .flatMap { fetchResult -> AnyPublisher<Void, Error> in
-                firstTodoPublisher(todoList: fetchResult)
+            .flatMap { [unowned self] fetchResult -> AnyPublisher<Void, Error> in
+                self.firstTodoPublisher(todoList: fetchResult)
                     .flatMap { todo -> AnyPublisher<Void, Error> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content
@@ -88,8 +94,8 @@ struct TodoInfoDataStoreImpl: TodoInfoDataStore {
         let fetchPublisher = CoreDataFetchPublisher<Todo>(context: context,
                                                           request: fetchRequest)
         return fetchPublisher
-            .flatMap { fetchResult -> AnyPublisher<Void, Error> in
-                firstTodoPublisher(todoList: fetchResult)
+            .flatMap { [unowned self] fetchResult -> AnyPublisher<Void, Error> in
+                self.firstTodoPublisher(todoList: fetchResult)
                     .flatMap { todo -> AnyPublisher<Void, Error> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content

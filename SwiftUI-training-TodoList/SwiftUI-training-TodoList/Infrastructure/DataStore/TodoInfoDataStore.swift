@@ -23,7 +23,7 @@ enum TodoDataStoreError: Error {
 final class TodoInfoDataStoreImpl: TodoInfoDataStore {
     private var insertPublisher: CoreDataInsertPublisher
 
-    init(insertPublisher: CoreDataInsertPublisher = TodoInfoDataStoreImpl.makeInsertPublisher()) {
+    init(insertPublisher: CoreDataInsertPublisher) {
         self.insertPublisher = insertPublisher
     }
 

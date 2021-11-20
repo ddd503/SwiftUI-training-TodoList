@@ -24,7 +24,7 @@ struct TodoListView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     EditButton()
-                    NavigationLink(destination: NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: $viewModel.showNewTodoView))
+                    NavigationLink(destination: AppRouter.makeNewTodoView(showNewTodoView: $viewModel.showNewTodoView)
                                     .onDisappear(perform: {
                         viewModel.onDisappear()
                     }),

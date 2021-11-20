@@ -45,6 +45,6 @@ struct TodoView_Previews: PreviewProvider {
     @State static var dummy = false
 
     static var previews: some View {
-        NewTodoView(viewModel: NewTodoViewModel(showNewTodoView: TodoView_Previews.$dummy))
+        AppRouter.makeNewTodoView(showNewTodoView: TodoView_Previews.$dummy)
     }
 }

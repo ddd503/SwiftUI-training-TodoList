@@ -46,10 +46,10 @@ extension CoreDataDeletePublisher.Subscription: Subscription {
     func request(_ demand: Subscribers.Demand) {
         var demand = demand
         guard let subscriber = subscriber, demand > 0 else { return }
-            demand -= 1
-            context.delete(dataModel)
-            demand += subscriber.receive(())
-            subscriber.receive(completion: .finished)
+        demand -= 1
+        context.delete(dataModel)
+        demand += subscriber.receive(())
+        subscriber.receive(completion: .finished)
     }
 
     func cancel() {

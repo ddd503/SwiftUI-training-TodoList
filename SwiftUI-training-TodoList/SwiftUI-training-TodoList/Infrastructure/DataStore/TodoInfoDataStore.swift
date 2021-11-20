@@ -86,11 +86,14 @@ struct TodoInfoDataStoreImpl: TodoInfoDataStore {
         return fetchPublisher
             .flatMap { fetchResult -> AnyPublisher<Void, Error> in
                 firstTodoPublisher(todoList: fetchResult)
-                    .flatMap { todo -> AnyPublisher<Void, Never> in
+                    .flatMap { todo -> AnyPublisher<Void, Error> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content
                         todo.editDate = Date()
-                        return CoreDataDeletePublisher<Todo>(context: context, dataModel: todo).eraseToAnyPublisher()
+                        return CoreDataDeletePublisher<Todo>(context: context, dataModel: todo)
+                            .flatMap { _ -> AnyPublisher<Void, Error> in
+                                CoreDataSavePublisher(context: context).eraseToAnyPublisher()
+                            }.eraseToAnyPublisher()
                     }.eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

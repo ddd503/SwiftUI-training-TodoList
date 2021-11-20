@@ -22,18 +22,22 @@ enum TodoDataStoreError: Error {
 
 struct TodoInfoDataStoreImpl: TodoInfoDataStore {
     func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error> {
-        CoreDataInsertPublisher(context: CoreDataManager.shared.container.viewContext,
-                                uuid: UUID().uuidString,
-                                title: title,
-                                content: content,
-                                editDate: Date())
-            .map { todo in
-                TodoInfo(id: todo.uuid!,
-                         title: todo.title,
-                         content: todo.content,
-                         editDate: todo.editDate)
-            }
-            .eraseToAnyPublisher()
+        let context = CoreDataManager.shared.container.viewContext
+        return CoreDataInsertPublisher(context: context) {
+            let newTodo = Todo(context: context)
+            newTodo.uuid = UUID().uuidString
+            newTodo.title = title
+            newTodo.content = content
+            newTodo.editDate = Date()
+            return newTodo
+        }
+        .map { todo in
+            TodoInfo(id: todo.uuid!,
+                     title: todo.title,
+                     content: todo.content,
+                     editDate: todo.editDate)
+        }
+        .eraseToAnyPublisher()
     }
 
     func read() -> AnyPublisher<[TodoInfo], Error> {

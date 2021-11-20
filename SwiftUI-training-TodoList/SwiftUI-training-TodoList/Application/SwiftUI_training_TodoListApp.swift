@@ -13,7 +13,7 @@ struct SwiftUI_training_TodoListApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TodoListView(viewModel: TodoListViewModel())
+            AppRouter.makeTodoListView()
         }
     }
 }

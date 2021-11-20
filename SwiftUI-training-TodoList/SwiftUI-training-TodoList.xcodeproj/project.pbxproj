@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		45035CA9272CEA9500E07826 /* TodoInfoDataStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45035CA8272CEA9500E07826 /* TodoInfoDataStoreTest.swift */; };
+		45035CAE2748C76700E07826 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45035CAD2748C76700E07826 /* AppRouter.swift */; };
 		451B941B26EBAC690006975E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B941A26EBAC690006975E /* CoreDataManager.swift */; };
 		456DFBFA26BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DFBF926BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift */; };
 		456DFBFE26BD1E6D004288F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456DFBFD26BD1E6D004288F5 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		45035C9E272CEA6100E07826 /* SwiftUI-training-TodoListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-training-TodoListTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45035CA8272CEA9500E07826 /* TodoInfoDataStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoInfoDataStoreTest.swift; sourceTree = "<group>"; };
+		45035CAD2748C76700E07826 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		451B941A26EBAC690006975E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		456DFBF626BD1E6C004288F5 /* SwiftUI-training-TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI-training-TodoList.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		456DFBF926BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_training_TodoListApp.swift; sourceTree = "<group>"; };
@@ -97,6 +99,14 @@
 			path = DataStore;
 			sourceTree = "<group>";
 		};
+		45035CAF2748C77B00E07826 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				45035CAD2748C76700E07826 /* AppRouter.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		453BD5CC26D9D3AA00271C14 /* DataStore */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +151,7 @@
 		456DFBF826BD1E6C004288F5 /* SwiftUI-training-TodoList */ = {
 			isa = PBXGroup;
 			children = (
+				45035CAF2748C77B00E07826 /* Environment */,
 				4579B3BA26CFFEEA00FA7A7A /* Application */,
 				4579B3B926CFFE6200FA7A7A /* Infrastructure */,
 				456DFBFD26BD1E6D004288F5 /* Assets.xcassets */,
@@ -303,6 +314,7 @@
 				45AF9DF727118466008E7613 /* CoreDataDeletePublisher.swift in Sources */,
 				45AF9DFB2719D0E1008E7613 /* NewTodoView.swift in Sources */,
 				451B941B26EBAC690006975E /* CoreDataManager.swift in Sources */,
+				45035CAE2748C76700E07826 /* AppRouter.swift in Sources */,
 				456DFBFA26BD1E6C004288F5 /* SwiftUI_training_TodoListApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

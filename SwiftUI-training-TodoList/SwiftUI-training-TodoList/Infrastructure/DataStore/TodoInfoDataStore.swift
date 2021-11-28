@@ -21,22 +21,16 @@ enum TodoDataStoreError: Error {
 }
 
 final class TodoInfoDataStoreImpl: TodoInfoDataStore {
-    private var insertPublisher: CoreDataInsertPublisher
+    private var coreDataEnvironment: CoreDataEnvironment
 
-    init(insertPublisher: CoreDataInsertPublisher) {
-        self.insertPublisher = insertPublisher
-    }
-
-    static func makeInsertPublisher() -> CoreDataInsertPublisher {
-        CoreDataInsertPublisher(context: CoreDataManager.shared.container.viewContext,
-                                uuid: UUID().uuidString,
-                                editDate: Date())
+    init(coreDataEnvironment: CoreDataEnvironment) {
+        self.coreDataEnvironment = coreDataEnvironment
     }
 
     func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error> {
-        insertPublisher.title = title
-        insertPublisher.content = content
-        return insertPublisher
+        coreDataEnvironment.insertPublisher.title = title
+        coreDataEnvironment.insertPublisher.content = content
+        return coreDataEnvironment.insertPublisher
             .map { todo in
                 TodoInfo(id: todo.uuid!,
                          title: todo.title,
@@ -47,11 +41,7 @@ final class TodoInfoDataStoreImpl: TodoInfoDataStore {
     }
 
     func read() -> AnyPublisher<[TodoInfo], Error> {
-        let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-        let sortDescriptor = NSSortDescriptor(key: "editDate", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        return CoreDataFetchPublisher<Todo>(context: CoreDataManager.shared.container.viewContext,
-                                            request: fetchRequest)
+        return coreDataEnvironment.fetchPublisher
             .map {
                 $0.map { todo in
                     TodoInfo(id: todo.uuid!,

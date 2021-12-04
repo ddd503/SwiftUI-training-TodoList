@@ -13,7 +13,7 @@ struct CoreDataFetchPublisher<DataModel>: Publisher where DataModel: NSManagedOb
     typealias Failure = Error
 
     let context: NSManagedObjectContext
-    let request: NSFetchRequest<DataModel>
+    var request: NSFetchRequest<DataModel>
     
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         let subscription =

@@ -49,4 +49,8 @@ struct CoreDataManager {
         }
         return result
     }()
+
+    static var emptyMock: CoreDataManager = {
+        return CoreDataManager(inMemory: true)
+    }()
 }

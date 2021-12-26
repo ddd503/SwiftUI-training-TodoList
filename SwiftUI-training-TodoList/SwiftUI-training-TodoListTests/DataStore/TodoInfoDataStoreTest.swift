@@ -14,13 +14,12 @@ class TodoInfoDataStoreTest: XCTestCase {
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
-            super.setUp()
-            cancellables = []
-        }
+        super.setUp()
+        cancellables = []
+    }
 
     func test_create() {
         let expectation = self.expectation(description: "Todo&TodoInfo生成確認")
-        var todo: Todo?
         var todoInfo: TodoInfo?
         var error: Error?
         let context = CoreDataManager.emptyMock.container.viewContext
@@ -32,12 +31,6 @@ class TodoInfoDataStoreTest: XCTestCase {
             .sink { completion in
                 switch completion {
                 case .finished:
-                    let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-                    do {
-                        todo = try context.fetch(fetchRequest).first
-                    } catch(let saveError) {
-                        error = saveError
-                    }
                     break
                 case .failure(let encounteredError):
                     error = encounteredError
@@ -51,14 +44,10 @@ class TodoInfoDataStoreTest: XCTestCase {
         waitForExpectations(timeout: 0.5)
 
         XCTAssertNil(error)
-        XCTAssertNotNil(todo?.uuid)
-        XCTAssertEqual(todo?.title, testTitle)
-        XCTAssertEqual(todo?.content, testContent)
-        XCTAssertNotNil(todo?.editDate)
-        XCTAssertEqual(todoInfo?.id, todo?.uuid)
-        XCTAssertEqual(todoInfo?.title, todo?.title)
-        XCTAssertEqual(todoInfo?.content, todo?.content)
-        XCTAssertEqual(todoInfo?.editDate, todo?.editDate)
+        XCTAssertNotNil(todoInfo?.id)
+        XCTAssertEqual(todoInfo?.title, testTitle)
+        XCTAssertEqual(todoInfo?.content, testContent)
+        XCTAssertNotNil(todoInfo?.editDate)
     }
 
     func test_read() {}

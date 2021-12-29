@@ -12,7 +12,8 @@ import Combine
 
 class CoreDataInsertPublisherTest: XCTestCase {
     // 参照の都度イニシャライズして書き換えていく
-    private var contextMock: NSManagedObjectContext { CoreDataManager.emptyMock.container.viewContext
+    private var contextMock: NSManagedObjectContext {
+        CoreDataManager.emptyMock.container.viewContext
     }
     private var cancellables: Set<AnyCancellable>!
 

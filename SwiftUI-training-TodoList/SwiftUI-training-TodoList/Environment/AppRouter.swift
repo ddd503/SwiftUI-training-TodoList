@@ -34,6 +34,7 @@ struct AppRouter {
         let deletePublisher = CoreDataDeletePublisher<Todo>(context: context, dataModel: nil)
         return CoreDataEnvironmentImpl(savePublisher: savePublisher,
                                        insertPublisher: insertPublisher,
-                                       fetchPublisher: fetchPublisher, deletePublisher: deletePublisher)
+                                       fetchPublisher: fetchPublisher,
+                                       deletePublisher: deletePublisher)
     }
 }

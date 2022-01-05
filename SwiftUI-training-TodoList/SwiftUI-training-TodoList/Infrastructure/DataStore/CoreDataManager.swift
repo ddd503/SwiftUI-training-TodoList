@@ -35,11 +35,15 @@ struct CoreDataManager {
         })
     }
 
-    static var preview: CoreDataManager = {
+    static func hasTodoMock(at count: Int) -> CoreDataManager {
         let result = CoreDataManager(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let todo = Todo(context: viewContext)
+        for i in 0..<count {
+            let newTodo = Todo(context: viewContext)
+            newTodo.uuid = "\(i)"
+            newTodo.title = "\(i)"
+            newTodo.content = "\(i)"
+            newTodo.editDate = Date()
         }
         do {
             try viewContext.save()
@@ -48,8 +52,8 @@ struct CoreDataManager {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
         return result
-    }()
-
+    }
+    
     static var emptyMock: CoreDataManager = {
         return CoreDataManager(inMemory: true)
     }()

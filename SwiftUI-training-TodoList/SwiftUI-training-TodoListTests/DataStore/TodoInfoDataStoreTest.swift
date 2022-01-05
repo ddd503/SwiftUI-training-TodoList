@@ -50,7 +50,38 @@ class TodoInfoDataStoreTest: XCTestCase {
         XCTAssertNotNil(todoInfo?.editDate)
     }
 
-    func test_read() {}
+    func test_read() {
+        let expectation = self.expectation(description: "Todo取得確認")
+        let todoCount = 10
+        var todoInfoList: [TodoInfo] = []
+        var error: Error?
+
+        let context = CoreDataManager.hasTodoMock(at: todoCount).container.viewContext
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+
+        todoInfoDataStore.read()
+            .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let publisherError):
+                error = publisherError
+            }
+            expectation.fulfill()
+        } receiveValue: { value in
+            todoInfoList = value
+        }
+        .store(in: &cancellables)
+
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertNil(error)
+        XCTAssertEqual(todoInfoList.count, todoCount)
+        let exepectListSort = todoInfoList.sorted { Int($0.id)! > Int($1.id)! } // 降順で並び替え
+        zip(todoInfoList, exepectListSort).forEach {
+            XCTAssertEqual($0.0.id, $0.1.id)
+        }
+    }
 
     func test_update() {}
 

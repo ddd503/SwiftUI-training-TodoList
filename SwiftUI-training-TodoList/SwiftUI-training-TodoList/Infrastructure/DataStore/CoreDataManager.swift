@@ -35,6 +35,8 @@ struct CoreDataManager {
         })
     }
 
+    /// 参照の都度イニシャライズしてコピー作ってく
+    /// - Parameter count: 初期化時にもつTodoの数
     static func hasTodoMock(at count: Int) -> CoreDataManager {
         let result = CoreDataManager(inMemory: true)
         let viewContext = result.container.viewContext
@@ -53,8 +55,4 @@ struct CoreDataManager {
         }
         return result
     }
-    
-    static var emptyMock: CoreDataManager = {
-        return CoreDataManager(inMemory: true)
-    }()
 }

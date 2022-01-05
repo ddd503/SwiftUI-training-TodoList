@@ -18,11 +18,15 @@ class TodoInfoDataStoreTest: XCTestCase {
         cancellables = []
     }
 
+    private func contextMock(at count: Int) -> NSManagedObjectContext {
+        CoreDataManager.hasTodoMock(at: count).container.viewContext
+    }
+
     func test_create() {
         let expectation = self.expectation(description: "Todo&TodoInfo生成確認")
         var todoInfo: TodoInfo?
         var error: Error?
-        let context = CoreDataManager.emptyMock.container.viewContext
+        let context = contextMock(at: 0)
         let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
         let testTitle = "テストタイトル"
         let testContent = "テスト本文"
@@ -56,7 +60,7 @@ class TodoInfoDataStoreTest: XCTestCase {
         var todoInfoList: [TodoInfo] = []
         var error: Error?
 
-        let context = CoreDataManager.hasTodoMock(at: todoCount).container.viewContext
+        let context = contextMock(at: todoCount)
         let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
 
         todoInfoDataStore.read()
@@ -77,7 +81,8 @@ class TodoInfoDataStoreTest: XCTestCase {
 
         XCTAssertNil(error)
         XCTAssertEqual(todoInfoList.count, todoCount)
-        let exepectListSort = todoInfoList.sorted { Int($0.id)! > Int($1.id)! } // 降順で並び替え
+        // ソート順確認のため比較用に降順で並び替えた配列を用意
+        let exepectListSort = todoInfoList.sorted { $0.editDate! > $1.editDate! }
         zip(todoInfoList, exepectListSort).forEach {
             XCTAssertEqual($0.0.id, $0.1.id)
         }

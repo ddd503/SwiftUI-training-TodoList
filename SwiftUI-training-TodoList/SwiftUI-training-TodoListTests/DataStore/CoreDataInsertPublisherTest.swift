@@ -11,10 +11,6 @@ import Combine
 @testable import SwiftUI_training_TodoList
 
 class CoreDataInsertPublisherTest: XCTestCase {
-    // 参照の都度イニシャライズして書き換えていく
-    private var contextMock: NSManagedObjectContext {
-        CoreDataManager.emptyMock.container.viewContext
-    }
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
@@ -30,18 +26,19 @@ class CoreDataInsertPublisherTest: XCTestCase {
         let title = "testTitle"
         let content = "testContent"
         let editDate = Date()
-        let publisher = CoreDataInsertPublisher(context: contextMock,
+        let context = CoreDataManager.hasTodoMock(at: 0).container.viewContext
+        let publisher = CoreDataInsertPublisher(context: context,
                                                 uuid: uuid,
                                                 title: title,
                                                 content: content,
                                                 editDate: editDate)
 
-        publisher.sink {[unowned self] completion in
+        publisher.sink { completion in
             switch completion {
             case .finished:
                 let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
                 do {
-                    todo = try self.contextMock.fetch(fetchRequest).first
+                    todo = try context.fetch(fetchRequest).first
                 } catch(let saveError) {
                     error = saveError
                 }

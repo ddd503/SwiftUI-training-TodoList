@@ -88,7 +88,50 @@ class TodoInfoDataStoreTest: XCTestCase {
         }
     }
 
-    func test_update() {}
+    func test_update() {
+        let expectation = self.expectation(description: "Todo更新確認")
+        var todoInfo: TodoInfo?
+        var error: Error?
+        let context = contextMock(at: 0)
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+
+        let newTodo = Todo(context: context)
+        newTodo.uuid = "999"
+        newTodo.title = ""
+        newTodo.content = ""
+        newTodo.editDate = Date()
+
+        try! context.save()
+
+        let updateInfo = TodoInfo(id: newTodo.uuid!, title: "更新後タイトル", content: "更新後本文", editDate: nil)
+
+        todoInfoDataStore.update(todoInfo: updateInfo)
+            .flatMap({ _ in
+                // Saveした結果がVoidのためreadし直す
+                todoInfoDataStore.read()
+            })
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let encounteredError):
+                    error = encounteredError
+                }
+                expectation.fulfill()
+            } receiveValue: { value in
+                todoInfo = value.first!
+            }
+            .store(in: &cancellables)
+
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(todoInfo?.id)
+        XCTAssertEqual(todoInfo?.title, updateInfo.title)
+        XCTAssertEqual(todoInfo?.content, updateInfo.content)
+        XCTAssertTrue(todoInfo?.editDate?.compare(newTodo.editDate!) == .orderedDescending ||
+                      todoInfo?.editDate?.compare(newTodo.editDate!) == .orderedSame)
+    }
 
     func test_delete() {}
 

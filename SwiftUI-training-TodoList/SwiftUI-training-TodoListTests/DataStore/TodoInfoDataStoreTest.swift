@@ -133,7 +133,51 @@ class TodoInfoDataStoreTest: XCTestCase {
                       todoInfo?.editDate?.compare(newTodo.editDate!) == .orderedSame)
     }
 
-    func test_delete() {}
+    func test_delete() {
+        let expectation = self.expectation(description: "Todo削除確認")
+        var todoInfoList: [TodoInfo] = []
+        var error: Error?
+        let context = contextMock(at: 0)
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+
+        let newTodo1 = Todo(context: context)
+        newTodo1.uuid = "1"
+        let newTodo2 = Todo(context: context)
+        newTodo2.uuid = "2"
+        try! context.save()
+
+        let deleteTodoInfo = TodoInfo(id: newTodo1.uuid!,
+                                      title: newTodo1.title,
+                                      content: newTodo1.content,
+                                      editDate: newTodo1.editDate)
+
+        todoInfoDataStore.delete(todoInfo: deleteTodoInfo)
+            .flatMap({ _ in
+                // Deleteした結果がVoidのためreadし直す
+                todoInfoDataStore.read()
+            })
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let encounteredError):
+                    error = encounteredError
+                }
+                expectation.fulfill()
+            } receiveValue: { value in
+                todoInfoList = value
+            }
+            .store(in: &cancellables)
+
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertNil(error)
+        XCTAssertFalse(todoInfoList.isEmpty)
+        XCTAssertEqual(todoInfoList.first!.id, newTodo2.uuid)
+        XCTAssertEqual(todoInfoList.first!.title, newTodo2.title)
+        XCTAssertEqual(todoInfoList.first!.content, newTodo2.content)
+        XCTAssertEqual(todoInfoList.first!.editDate, newTodo2.editDate)
+    }
 
 }
 

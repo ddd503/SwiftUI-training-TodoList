@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import CoreData
 
 protocol CoreDataEnvironment {
@@ -29,5 +30,22 @@ struct CoreDataEnvironmentImpl: CoreDataEnvironment {
         self.insertPublisher = insertPublisher
         self.fetchPublisher = fetchPublisher
         self.deletePublisher = deletePublisher
+    }
+
+    mutating func setInsertInfo(title: String, content: String) {
+        self.insertPublisher.title = title
+        self.insertPublisher.content = content
+    }
+
+    mutating func setFetchRequest(_ request: NSFetchRequest<Todo>) {
+        self.fetchPublisher.request = request
+    }
+
+    func insertTodoPublisher() -> AnyPublisher<Todo, Error> {
+        self.insertPublisher.eraseToAnyPublisher()
+    }
+
+    func fetchTodoPublisher() -> AnyPublisher<[Todo], Error> {
+        self.fetchPublisher.eraseToAnyPublisher()
     }
 }

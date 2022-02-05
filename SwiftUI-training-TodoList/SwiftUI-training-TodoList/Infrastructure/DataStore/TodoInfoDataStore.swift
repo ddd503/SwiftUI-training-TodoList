@@ -28,9 +28,8 @@ final class TodoInfoDataStoreImpl: TodoInfoDataStore {
     }
 
     func create(title: String, content: String?) -> AnyPublisher<TodoInfo, Error> {
-        coreDataEnvironment.insertPublisher.title = title
-        coreDataEnvironment.insertPublisher.content = content
-        return coreDataEnvironment.insertPublisher
+        coreDataEnvironment.setInsertTodoInfo(title: title, content: content)
+        return coreDataEnvironment.insertTodoAnyPublisher()
             .map { todo in
                 TodoInfo(id: todo.uuid!,
                          title: todo.title,
@@ -44,8 +43,8 @@ final class TodoInfoDataStoreImpl: TodoInfoDataStore {
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
         let sortDescriptor = NSSortDescriptor(key: "editDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        coreDataEnvironment.fetchPublisher.request = fetchRequest
-        return coreDataEnvironment.fetchPublisher
+        coreDataEnvironment.setFetchRequest(fetchRequest)
+        return coreDataEnvironment.fetchTodoPublisher()
             .map {
                 $0.map { todo in
                     TodoInfo(id: todo.uuid!,
@@ -61,15 +60,15 @@ final class TodoInfoDataStoreImpl: TodoInfoDataStore {
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
         fetchRequest.predicate = NSPredicate(format: "uuid == %@", todoInfo.id)
         fetchRequest.fetchLimit = 1
-        coreDataEnvironment.fetchPublisher.request = fetchRequest
-        return coreDataEnvironment.fetchPublisher
+        coreDataEnvironment.setFetchRequest(fetchRequest)
+        return coreDataEnvironment.fetchTodoPublisher()
             .flatMap { [unowned self] fetchResult -> AnyPublisher<Void, Error> in
                 self.firstTodoPublisher(todoList: fetchResult)
                     .flatMap { todo -> AnyPublisher<Void, Error> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content
                         todo.editDate = Date()
-                        return coreDataEnvironment.savePublisher.eraseToAnyPublisher()
+                        return coreDataEnvironment.saveDataPublisher()
                     }.eraseToAnyPublisher()
             }
             .map {_ in
@@ -82,24 +81,24 @@ final class TodoInfoDataStoreImpl: TodoInfoDataStore {
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
         fetchRequest.predicate = NSPredicate(format: "uuid == %@", todoInfo.id)
         fetchRequest.fetchLimit = 1
-        coreDataEnvironment.fetchPublisher.request = fetchRequest
-        return coreDataEnvironment.fetchPublisher
+        coreDataEnvironment.setFetchRequest(fetchRequest)
+        return coreDataEnvironment.fetchTodoPublisher()
             .flatMap { [unowned self] fetchResult -> AnyPublisher<Void, Error> in
                 self.firstTodoPublisher(todoList: fetchResult)
                     .flatMap { todo -> AnyPublisher<Void, Error> in
                         todo.title = todoInfo.title
                         todo.content = todoInfo.content
                         todo.editDate = Date()
-                        coreDataEnvironment.deletePublisher.dataModel = todo
-                        return coreDataEnvironment.deletePublisher
+                        coreDataEnvironment.setDeleteTodo(todo)
+                        return coreDataEnvironment.deleteTodoPublisher()
                             .flatMap { _ -> AnyPublisher<Void, Error> in
-                                coreDataEnvironment.savePublisher.eraseToAnyPublisher()
+                                coreDataEnvironment.saveDataPublisher()
                             }.eraseToAnyPublisher()
                     }.eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
-
+    
     private func firstTodoPublisher(todoList: [Todo]) -> Future<Todo, Error> {
         Future<Todo, Error> { promise in
             guard let todo = todoList.first else {

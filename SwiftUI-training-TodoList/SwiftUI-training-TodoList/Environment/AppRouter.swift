@@ -25,7 +25,7 @@ struct AppRouter {
     static func makeCoreDataEnvironment() -> CoreDataEnvironment {
         let context = CoreDataManager.shared.container.viewContext
         let savePublisher = CoreDataSavePublisher(context: context)
-        let insertPublisher = CoreDataInsertPublisher(context: context,
+        let insertTodoPublisher = CoreDataInsertTodoPublisher(context: context,
                                                       uuid: UUID().uuidString,
                                                       editDate: Date())
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
@@ -33,7 +33,7 @@ struct AppRouter {
                                                           request: fetchRequest)
         let deletePublisher = CoreDataDeletePublisher<Todo>(context: context, dataModel: nil)
         return CoreDataEnvironmentImpl(savePublisher: savePublisher,
-                                       insertPublisher: insertPublisher,
+                                       insertTodoPublisher: insertTodoPublisher,
                                        fetchPublisher: fetchPublisher,
                                        deletePublisher: deletePublisher)
     }

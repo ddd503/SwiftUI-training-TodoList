@@ -184,7 +184,7 @@ class TodoInfoDataStoreTest: XCTestCase {
 class CoreDataEnvironmentMock: CoreDataEnvironment {
     var savePublisher: CoreDataSavePublisher
 
-    var insertPublisher: CoreDataInsertPublisher
+    var insertPublisher: CoreDataInsertTodoPublisher
 
     var fetchPublisher: CoreDataFetchPublisher<Todo>
 
@@ -192,7 +192,7 @@ class CoreDataEnvironmentMock: CoreDataEnvironment {
 
     init(context: NSManagedObjectContext) {
         let savePublisher = CoreDataSavePublisher(context: context)
-        let insertPublisher = CoreDataInsertPublisher(context: context,
+        let insertPublisher = CoreDataInsertTodoPublisher(context: context,
                                                       uuid: UUID().uuidString,
                                                       editDate: Date())
         let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")

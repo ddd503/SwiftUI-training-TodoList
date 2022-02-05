@@ -27,7 +27,7 @@ class CoreDataInsertPublisherTest: XCTestCase {
         let content = "testContent"
         let editDate = Date()
         let context = CoreDataManager.hasTodoMock(at: 0).container.viewContext
-        let publisher = CoreDataInsertPublisher(context: context,
+        let publisher = CoreDataInsertTodoPublisher(context: context,
                                                 uuid: uuid,
                                                 title: title,
                                                 content: content,

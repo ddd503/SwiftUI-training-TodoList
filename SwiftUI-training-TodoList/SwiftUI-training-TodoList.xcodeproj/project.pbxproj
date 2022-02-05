@@ -28,7 +28,7 @@
 		45AF9DF327114095008E7613 /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF127114095008E7613 /* Todo+CoreDataProperties.swift */; };
 		45AF9DF5271172BD008E7613 /* CoreDataFetchPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF4271172BD008E7613 /* CoreDataFetchPublisher.swift */; };
 		45AF9DF727118466008E7613 /* CoreDataDeletePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF627118466008E7613 /* CoreDataDeletePublisher.swift */; };
-		45AF9DF927145C4F008E7613 /* CoreDataInsertPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF827145C4F008E7613 /* CoreDataInsertPublisher.swift */; };
+		45AF9DF927145C4F008E7613 /* CoreDataInsertTodoPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF827145C4F008E7613 /* CoreDataInsertTodoPublisher.swift */; };
 		45AF9DFB2719D0E1008E7613 /* NewTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DFA2719D0E1008E7613 /* NewTodoView.swift */; };
 		45AF9DFD2719D401008E7613 /* NewTodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DFC2719D401008E7613 /* NewTodoViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -68,7 +68,7 @@
 		45AF9DF127114095008E7613 /* Todo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		45AF9DF4271172BD008E7613 /* CoreDataFetchPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFetchPublisher.swift; sourceTree = "<group>"; };
 		45AF9DF627118466008E7613 /* CoreDataDeletePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDeletePublisher.swift; sourceTree = "<group>"; };
-		45AF9DF827145C4F008E7613 /* CoreDataInsertPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInsertPublisher.swift; sourceTree = "<group>"; };
+		45AF9DF827145C4F008E7613 /* CoreDataInsertTodoPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInsertTodoPublisher.swift; sourceTree = "<group>"; };
 		45AF9DFA2719D0E1008E7613 /* NewTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoView.swift; sourceTree = "<group>"; };
 		45AF9DFC2719D401008E7613 /* NewTodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,7 +127,7 @@
 				45AF9DEE27113B48008E7613 /* CoreDataSavePublisher.swift */,
 				45AF9DF4271172BD008E7613 /* CoreDataFetchPublisher.swift */,
 				45AF9DF627118466008E7613 /* CoreDataDeletePublisher.swift */,
-				45AF9DF827145C4F008E7613 /* CoreDataInsertPublisher.swift */,
+				45AF9DF827145C4F008E7613 /* CoreDataInsertTodoPublisher.swift */,
 				4571909F27532B2F0020E9D5 /* CoreDataEnvironment.swift */,
 			);
 			path = DataStore;
@@ -319,7 +319,7 @@
 				45AF9DE5270B3A19008E7613 /* TodoListView.swift in Sources */,
 				4579B3BC26CFFF4100FA7A7A /* TodoInfoDataStore.swift in Sources */,
 				45AF9DF227114095008E7613 /* Todo+CoreDataClass.swift in Sources */,
-				45AF9DF927145C4F008E7613 /* CoreDataInsertPublisher.swift in Sources */,
+				45AF9DF927145C4F008E7613 /* CoreDataInsertTodoPublisher.swift in Sources */,
 				45AF9DEF27113B48008E7613 /* CoreDataSavePublisher.swift in Sources */,
 				45AF9DE327056CA0008E7613 /* TodoListViewModel.swift in Sources */,
 				457190A027532B2F0020E9D5 /* CoreDataEnvironment.swift in Sources */,

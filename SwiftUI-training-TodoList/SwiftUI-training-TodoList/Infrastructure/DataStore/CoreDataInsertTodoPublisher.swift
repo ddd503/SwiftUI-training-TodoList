@@ -1,5 +1,5 @@
 //
-//  CoreDataInsertPublisher.swift
+//  CoreDataInsertTodoPublisher.swift
 //  SwiftUI-training-TodoList
 //
 //  Created by kawaharadai on 2021/10/11.
@@ -8,7 +8,7 @@
 import CoreData
 import Combine
 
-struct CoreDataInsertPublisher: Publisher {
+struct CoreDataInsertTodoPublisher: Publisher {
     typealias Output = Todo
     typealias Failure = Error
 
@@ -22,7 +22,7 @@ struct CoreDataInsertPublisher: Publisher {
         // subscriberの登録
         // 購読時に実行する処理を登録
         let subscription =
-        CoreDataInsertPublisher.Subscription(subscriber: subscriber,
+        CoreDataInsertTodoPublisher.Subscription(subscriber: subscriber,
                                              context: context,
                                              uuid: uuid,
                                              title: title,
@@ -32,7 +32,7 @@ struct CoreDataInsertPublisher: Publisher {
     }
 }
 
-extension CoreDataInsertPublisher {
+extension CoreDataInsertTodoPublisher {
     class Subscription<S> where S : Subscriber, Failure == S.Failure, Output == S.Input {
         // Sを使うためにextensionでインナークラスにしている
         private var subscriber: S?
@@ -58,7 +58,7 @@ extension CoreDataInsertPublisher {
     }
 }
 
-extension CoreDataInsertPublisher.Subscription: Subscription {
+extension CoreDataInsertTodoPublisher.Subscription: Subscription {
     // 購読時毎に実行される処理
     func request(_ demand: Subscribers.Demand) {
         var demand = demand

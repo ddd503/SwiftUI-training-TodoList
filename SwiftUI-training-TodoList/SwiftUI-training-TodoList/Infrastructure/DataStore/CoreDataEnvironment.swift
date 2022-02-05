@@ -10,42 +10,57 @@ import Combine
 import CoreData
 
 protocol CoreDataEnvironment {
-    var savePublisher: CoreDataSavePublisher { get }
-    var insertPublisher: CoreDataInsertPublisher { get set }
-    var fetchPublisher: CoreDataFetchPublisher<Todo> { get set }
-    var deletePublisher: CoreDataDeletePublisher<Todo> { get set }
+    func setInsertTodoInfo(title: String, content: String?)
+    func setFetchRequest(_ fetchRequest: NSFetchRequest<Todo>)
+    func setDeleteTodo(_ todo: Todo)
+    func saveDataPublisher() -> AnyPublisher<Void, Error>
+    func insertTodoAnyPublisher() -> AnyPublisher<Todo, Error>
+    func fetchTodoPublisher() -> AnyPublisher<[Todo], Error>
+    func deleteTodoPublisher() -> AnyPublisher<Void, Never>
 }
 
-struct CoreDataEnvironmentImpl: CoreDataEnvironment {
+class CoreDataEnvironmentImpl: CoreDataEnvironment {
     let savePublisher: CoreDataSavePublisher
-    var insertPublisher: CoreDataInsertPublisher
+    var insertTodoPublisher: CoreDataInsertTodoPublisher
     var fetchPublisher: CoreDataFetchPublisher<Todo>
     var deletePublisher: CoreDataDeletePublisher<Todo>
 
     init(savePublisher: CoreDataSavePublisher,
-         insertPublisher: CoreDataInsertPublisher,
+         insertTodoPublisher: CoreDataInsertTodoPublisher,
          fetchPublisher: CoreDataFetchPublisher<Todo>,
          deletePublisher: CoreDataDeletePublisher<Todo>) {
         self.savePublisher = savePublisher
-        self.insertPublisher = insertPublisher
+        self.insertTodoPublisher = insertTodoPublisher
         self.fetchPublisher = fetchPublisher
         self.deletePublisher = deletePublisher
     }
 
-    mutating func setInsertInfo(title: String, content: String) {
-        self.insertPublisher.title = title
-        self.insertPublisher.content = content
+    func setInsertTodoInfo(title: String, content: String?) {
+        insertTodoPublisher.title = title
+        insertTodoPublisher.content = content
     }
 
-    mutating func setFetchRequest(_ request: NSFetchRequest<Todo>) {
-        self.fetchPublisher.request = request
+    func setFetchRequest(_ fetchRequest: NSFetchRequest<Todo>) {
+        fetchPublisher.request = fetchRequest
     }
 
-    func insertTodoPublisher() -> AnyPublisher<Todo, Error> {
-        self.insertPublisher.eraseToAnyPublisher()
+    func setDeleteTodo(_ todo: Todo) {
+        deletePublisher.dataModel = todo
+    }
+
+    func saveDataPublisher() -> AnyPublisher<Void, Error> {
+        savePublisher.eraseToAnyPublisher()
+    }
+    
+    func insertTodoAnyPublisher() -> AnyPublisher<Todo, Error> {
+        insertTodoPublisher.eraseToAnyPublisher()
     }
 
     func fetchTodoPublisher() -> AnyPublisher<[Todo], Error> {
-        self.fetchPublisher.eraseToAnyPublisher()
+        fetchPublisher.eraseToAnyPublisher()
+    }
+
+    func deleteTodoPublisher() -> AnyPublisher<Void, Never> {
+        deletePublisher.eraseToAnyPublisher()
     }
 }

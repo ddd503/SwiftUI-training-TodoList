@@ -10,13 +10,10 @@ import Combine
 import CoreData
 
 protocol CoreDataEnvironment {
-    func setInsertTodoInfo(title: String, content: String?)
-    func setFetchRequest(_ fetchRequest: NSFetchRequest<Todo>)
-    func setDeleteTodo(_ todo: Todo)
     func saveDataPublisher() -> AnyPublisher<Void, Error>
-    func insertTodoAnyPublisher() -> AnyPublisher<Todo, Error>
-    func fetchTodoPublisher() -> AnyPublisher<[Todo], Error>
-    func deleteTodoPublisher() -> AnyPublisher<Void, Never>
+    func insertTodoAnyPublisher(title: String, content: String?) -> AnyPublisher<Todo, Error>
+    func fetchTodoPublisher(fetchRequest: NSFetchRequest<Todo>) -> AnyPublisher<[Todo], Error>
+    func deleteTodoPublisher(todo: Todo) -> AnyPublisher<Void, Never>
 }
 
 class CoreDataEnvironmentImpl: CoreDataEnvironment {
@@ -35,32 +32,23 @@ class CoreDataEnvironmentImpl: CoreDataEnvironment {
         self.deletePublisher = deletePublisher
     }
 
-    func setInsertTodoInfo(title: String, content: String?) {
-        insertTodoPublisher.title = title
-        insertTodoPublisher.content = content
-    }
-
-    func setFetchRequest(_ fetchRequest: NSFetchRequest<Todo>) {
-        fetchPublisher.request = fetchRequest
-    }
-
-    func setDeleteTodo(_ todo: Todo) {
-        deletePublisher.dataModel = todo
-    }
-
     func saveDataPublisher() -> AnyPublisher<Void, Error> {
         savePublisher.eraseToAnyPublisher()
     }
     
-    func insertTodoAnyPublisher() -> AnyPublisher<Todo, Error> {
-        insertTodoPublisher.eraseToAnyPublisher()
+    func insertTodoAnyPublisher(title: String, content: String?) -> AnyPublisher<Todo, Error> {
+        insertTodoPublisher.title = title
+        insertTodoPublisher.content = content
+        return insertTodoPublisher.eraseToAnyPublisher()
     }
 
-    func fetchTodoPublisher() -> AnyPublisher<[Todo], Error> {
-        fetchPublisher.eraseToAnyPublisher()
+    func fetchTodoPublisher(fetchRequest: NSFetchRequest<Todo>) -> AnyPublisher<[Todo], Error> {
+        fetchPublisher.request = fetchRequest
+        return fetchPublisher.eraseToAnyPublisher()
     }
 
-    func deleteTodoPublisher() -> AnyPublisher<Void, Never> {
-        deletePublisher.eraseToAnyPublisher()
+    func deleteTodoPublisher(todo: Todo) -> AnyPublisher<Void, Never> {
+        deletePublisher.dataModel = todo
+        return deletePublisher.eraseToAnyPublisher()
     }
 }

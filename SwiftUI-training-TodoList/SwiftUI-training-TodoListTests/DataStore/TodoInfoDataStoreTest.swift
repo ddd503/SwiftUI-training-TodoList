@@ -60,8 +60,9 @@ class TodoInfoDataStoreTest: XCTestCase {
         var todoInfoList: [TodoInfo] = []
         var error: Error?
 
-        let context = contextMock(at: todoCount)
-        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+        let coreDataEnvironment = CoreDataEnvironmentMock()
+        // ここで10個インサートする必要あり
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: coreDataEnvironment)
 
         todoInfoDataStore.read()
             .sink { completion in
@@ -182,27 +183,38 @@ class TodoInfoDataStoreTest: XCTestCase {
 }
 
 class CoreDataEnvironmentMock: CoreDataEnvironment {
-    var savePublisher: CoreDataSavePublisher
-
-    var insertPublisher: CoreDataInsertTodoPublisher
-
+    let savePublisher: CoreDataSavePublisher
+    var insertTodoPublisher: CoreDataInsertTodoPublisher
     var fetchPublisher: CoreDataFetchPublisher<Todo>
-
     var deletePublisher: CoreDataDeletePublisher<Todo>
 
-    init(context: NSManagedObjectContext) {
-        let savePublisher = CoreDataSavePublisher(context: context)
-        let insertPublisher = CoreDataInsertTodoPublisher(context: context,
-                                                      uuid: UUID().uuidString,
-                                                      editDate: Date())
-        let fetchRequest = NSFetchRequest<Todo>(entityName: "Todo")
-        let fetchPublisher = CoreDataFetchPublisher<Todo>(context: context,
-                                                          request: fetchRequest)
-        let deletePublisher = CoreDataDeletePublisher<Todo>(context: context, dataModel: nil)
-
+    init(savePublisher: CoreDataSavePublisher,
+         insertTodoPublisher: CoreDataInsertTodoPublisher,
+         fetchPublisher: CoreDataFetchPublisher<Todo>,
+         deletePublisher: CoreDataDeletePublisher<Todo>) {
         self.savePublisher = savePublisher
-        self.insertPublisher = insertPublisher
+        self.insertTodoPublisher = insertTodoPublisher
         self.fetchPublisher = fetchPublisher
         self.deletePublisher = deletePublisher
+    }
+
+    func saveDataPublisher() -> AnyPublisher<Void, Error> {
+        savePublisher.eraseToAnyPublisher()
+    }
+
+    func insertTodoAnyPublisher(title: String, content: String?) -> AnyPublisher<Todo, Error> {
+        insertTodoPublisher.title = title
+        insertTodoPublisher.content = content
+        return insertTodoPublisher.eraseToAnyPublisher()
+    }
+
+    func fetchTodoPublisher(fetchRequest: NSFetchRequest<Todo>) -> AnyPublisher<[Todo], Error> {
+        fetchPublisher.request = fetchRequest
+        return fetchPublisher.eraseToAnyPublisher()
+    }
+
+    func deleteTodoPublisher(todo: Todo) -> AnyPublisher<Void, Never> {
+        deletePublisher.dataModel = todo
+        return deletePublisher.eraseToAnyPublisher()
     }
 }

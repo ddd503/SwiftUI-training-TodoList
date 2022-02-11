@@ -31,6 +31,7 @@
 		45AF9DF927145C4F008E7613 /* CoreDataInsertTodoPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DF827145C4F008E7613 /* CoreDataInsertTodoPublisher.swift */; };
 		45AF9DFB2719D0E1008E7613 /* NewTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DFA2719D0E1008E7613 /* NewTodoView.swift */; };
 		45AF9DFD2719D401008E7613 /* NewTodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9DFC2719D401008E7613 /* NewTodoViewModel.swift */; };
+		45BBE27127B5F36C00035A98 /* CoreDataInsertTodoPublisherMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BBE27027B5F36C00035A98 /* CoreDataInsertTodoPublisherMock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		45AF9DF827145C4F008E7613 /* CoreDataInsertTodoPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInsertTodoPublisher.swift; sourceTree = "<group>"; };
 		45AF9DFA2719D0E1008E7613 /* NewTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoView.swift; sourceTree = "<group>"; };
 		45AF9DFC2719D401008E7613 /* NewTodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoViewModel.swift; sourceTree = "<group>"; };
+		45BBE27027B5F36C00035A98 /* CoreDataInsertTodoPublisherMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataInsertTodoPublisherMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				45A80E3127783AE700984ADB /* CoreDataInsertPublisherTest.swift */,
 				45A80E33277C0DFA00984ADB /* CoreDataFetchPublisherTest.swift */,
 				45A80E3527929E1E00984ADB /* CoreDataDeletePublisherTest.swift */,
+				45BBE27027B5F36C00035A98 /* CoreDataInsertTodoPublisherMock.swift */,
 			);
 			path = DataStore;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 			files = (
 				45A80E3627929E1E00984ADB /* CoreDataDeletePublisherTest.swift in Sources */,
 				45A80E3227783AE700984ADB /* CoreDataInsertPublisherTest.swift in Sources */,
+				45BBE27127B5F36C00035A98 /* CoreDataInsertTodoPublisherMock.swift in Sources */,
 				45A80E34277C0DFA00984ADB /* CoreDataFetchPublisherTest.swift in Sources */,
 				45035CA9272CEA9500E07826 /* TodoInfoDataStoreTest.swift in Sources */,
 			);

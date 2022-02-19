@@ -22,16 +22,21 @@ class TodoInfoDataStoreTest: XCTestCase {
         CoreDataManager.hasTodoMock(at: count).container.viewContext
     }
 
-    func test_create() {
-        let expectation = self.expectation(description: "Todo&TodoInfo生成確認")
+    func test_create_insert成功() {
+        let expectation = self.expectation(description: "InsertされたTodo情報をTodoInfoとして取得できること")
         var todoInfo: TodoInfo?
         var error: Error?
+        let coreDataEnvironment = CoreDataEnvironmentMock()
         let context = contextMock(at: 0)
-        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
-        let testTitle = "テストタイトル"
-        let testContent = "テスト本文"
-        todoInfoDataStore.create(title: testTitle,
-                                 content: testContent)
+        let createdTodo = Todo(context: context)
+        createdTodo.uuid = "uuid"
+        createdTodo.title = "title"
+        createdTodo.content = "content"
+        createdTodo.editDate = Date()
+        coreDataEnvironment.insertTodoPublisher.todo = createdTodo
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: coreDataEnvironment)
+        todoInfoDataStore.create(title: createdTodo.title!,
+                                 content: createdTodo.content)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -48,10 +53,10 @@ class TodoInfoDataStoreTest: XCTestCase {
         waitForExpectations(timeout: 0.5)
 
         XCTAssertNil(error)
-        XCTAssertNotNil(todoInfo?.id)
-        XCTAssertEqual(todoInfo?.title, testTitle)
-        XCTAssertEqual(todoInfo?.content, testContent)
-        XCTAssertNotNil(todoInfo?.editDate)
+        XCTAssertEqual(todoInfo!.id, createdTodo.uuid)
+        XCTAssertEqual(todoInfo!.title, createdTodo.title)
+        XCTAssertEqual(todoInfo!.content, createdTodo.content)
+        XCTAssertEqual(todoInfo!.editDate, createdTodo.editDate)
     }
 
     func test_read() {
@@ -94,7 +99,7 @@ class TodoInfoDataStoreTest: XCTestCase {
         var todoInfo: TodoInfo?
         var error: Error?
         let context = contextMock(at: 0)
-        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock())
 
         let newTodo = Todo(context: context)
         newTodo.uuid = "999"
@@ -139,7 +144,7 @@ class TodoInfoDataStoreTest: XCTestCase {
         var todoInfoList: [TodoInfo] = []
         var error: Error?
         let context = contextMock(at: 0)
-        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock(context: context))
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: CoreDataEnvironmentMock())
 
         let newTodo1 = Todo(context: context)
         newTodo1.uuid = "1"
@@ -183,19 +188,13 @@ class TodoInfoDataStoreTest: XCTestCase {
 }
 
 class CoreDataEnvironmentMock: CoreDataEnvironment {
-    let savePublisher: CoreDataSavePublisher
-    var insertTodoPublisher: CoreDataInsertTodoPublisher
-    var fetchPublisher: CoreDataFetchPublisher<Todo>
-    var deletePublisher: CoreDataDeletePublisher<Todo>
+    var savePublisher: CoreDataSavePublisher!
+    var insertTodoPublisher: CoreDataInsertTodoPublisherMock!
+    var fetchPublisher: CoreDataFetchPublisher<Todo>!
+    var deletePublisher: CoreDataDeletePublisher<Todo>!
 
-    init(savePublisher: CoreDataSavePublisher,
-         insertTodoPublisher: CoreDataInsertTodoPublisher,
-         fetchPublisher: CoreDataFetchPublisher<Todo>,
-         deletePublisher: CoreDataDeletePublisher<Todo>) {
-        self.savePublisher = savePublisher
+    init(insertTodoPublisher: CoreDataInsertTodoPublisherMock = CoreDataInsertTodoPublisherMock()) {
         self.insertTodoPublisher = insertTodoPublisher
-        self.fetchPublisher = fetchPublisher
-        self.deletePublisher = deletePublisher
     }
 
     func saveDataPublisher() -> AnyPublisher<Void, Error> {

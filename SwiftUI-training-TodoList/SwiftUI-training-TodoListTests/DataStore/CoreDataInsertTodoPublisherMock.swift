@@ -11,7 +11,8 @@ import Combine
 final class CoreDataInsertTodoPublisherMock: Publisher {
     typealias Output = Todo
     typealias Failure = Error
-
+    var title: String?
+    var content: String?
     var isFailedInsert = false
     var todo: Todo?
     var error: Error?
@@ -40,13 +41,13 @@ final class CoreDataInsertTodoPublisherMock: Publisher {
 extension CoreDataInsertTodoPublisherMock.Subscription: Subscription {
     func request(_ demand: Subscribers.Demand) {
         var demand = demand
-        guard let subscriber = subscriber, demand > 0 else { return }
+        guard demand > 0 else { return }
         if isFailedInsert {
-            subscriber.receive(completion: .failure(error!))
+            subscriber!.receive(completion: .failure(error!))
         } else {
             demand -= 1
-            demand += subscriber.receive(todo!)
-            subscriber.receive(completion: .finished)
+            demand += subscriber!.receive(todo!)
+            subscriber!.receive(completion: .finished)
         }
     }
 

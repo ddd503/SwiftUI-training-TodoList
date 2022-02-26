@@ -59,6 +59,39 @@ class TodoInfoDataStoreTest: XCTestCase {
         XCTAssertEqual(todoInfo!.editDate, createdTodo.editDate)
     }
 
+    func test_create_insert失敗() {
+        let expectation = self.expectation(description: "Insert失敗エラーをハンドリングできること")
+        var todoInfo: TodoInfo?
+        var error: Error?
+        let coreDataEnvironment = CoreDataEnvironmentMock()
+        let context = contextMock(at: 0)
+        let createdTodo = Todo(context: context)
+        createdTodo.uuid = "uuid"
+        createdTodo.title = "title"
+        createdTodo.content = "content"
+        createdTodo.editDate = Date()
+        coreDataEnvironment.insertTodoPublisher.todo = createdTodo
+        let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: coreDataEnvironment)
+        todoInfoDataStore.create(title: createdTodo.title!,
+                                 content: createdTodo.content)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let encounteredError):
+                    error = encounteredError
+                }
+                expectation.fulfill()
+            } receiveValue: { value in
+                todoInfo = value
+            }
+            .store(in: &cancellables)
+
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertNotNil(error)
+    }
+
     func test_read() {
         let expectation = self.expectation(description: "Todo取得確認")
         let todoCount = 10

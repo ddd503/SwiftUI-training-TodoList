@@ -64,16 +64,12 @@ class TodoInfoDataStoreTest: XCTestCase {
         var todoInfo: TodoInfo?
         var error: Error?
         let coreDataEnvironment = CoreDataEnvironmentMock()
-        let context = contextMock(at: 0)
-        let createdTodo = Todo(context: context)
-        createdTodo.uuid = "uuid"
-        createdTodo.title = "title"
-        createdTodo.content = "content"
-        createdTodo.editDate = Date()
-        coreDataEnvironment.insertTodoPublisher.todo = createdTodo
+        struct InsertError: Error {}
+        let returnError = InsertError()
+        coreDataEnvironment.insertTodoPublisher.isFailedInsert = true
+        coreDataEnvironment.insertTodoPublisher.error = returnError
         let todoInfoDataStore = TodoInfoDataStoreImpl(coreDataEnvironment: coreDataEnvironment)
-        todoInfoDataStore.create(title: createdTodo.title!,
-                                 content: createdTodo.content)
+        todoInfoDataStore.create(title: "", content: "")
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -89,7 +85,8 @@ class TodoInfoDataStoreTest: XCTestCase {
 
         waitForExpectations(timeout: 0.5)
 
-        XCTAssertNotNil(error)
+        XCTAssertNil(todoInfo)
+        XCTAssertTrue(error is InsertError)
     }
 
     func test_read() {

@@ -1,5 +1,5 @@
 # SwiftUI-training-TodoList
-SwiftUI×ConvineのTodoアプリサンプル
+SwiftUI×CombineのTodoアプリサンプル
 
 # 開発環境
 

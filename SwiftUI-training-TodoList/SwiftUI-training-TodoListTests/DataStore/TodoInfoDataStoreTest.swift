@@ -22,6 +22,7 @@ class TodoInfoDataStoreTest: XCTestCase {
         CoreDataManager.hasTodoMock(at: count).container.viewContext
     }
 
+    // insertのみpublisherをMockにしてテストしてみている
     func test_create_insert成功() {
         let expectation = self.expectation(description: "InsertされたTodo情報をTodoInfoとして取得できること")
         var todoInfo: TodoInfo?
